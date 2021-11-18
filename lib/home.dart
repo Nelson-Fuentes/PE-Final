@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pe_final/profile.dart';
 
+import 'map.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -77,7 +79,7 @@ class HomeView extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomeView()),
+                        MaterialPageRoute(builder: (context) => const MapView()),
                       );
                     },
                     child: Icon(Icons.search, size: 18),
