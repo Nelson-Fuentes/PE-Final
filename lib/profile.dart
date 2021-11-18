@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pe_final/stalkers.dart';
 
 import 'home.dart';
 
@@ -38,7 +39,6 @@ class ProfileView extends StatelessWidget {
               leading: Icon(Icons.person),
               title: const Text('Perfil'),
               onTap: () {
-                Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -135,7 +135,7 @@ class ProfileView extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomeView()),
+                      MaterialPageRoute(builder: (context) => const StalkersView()),
                     );
                   },
                   label: Text("VER STALKERS"),
