@@ -83,7 +83,12 @@ class HomeView extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MapView()),
+                            builder: (context) => const MapPage(
+                                  lattitude: -16.399314,
+                                  longitude: -71.536684,
+                                  name: "Demo",
+                                  lastname: "Patient",
+                                )),
                       );
                     },
                     child: Icon(Icons.search, size: 18),
