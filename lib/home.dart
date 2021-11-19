@@ -49,11 +49,11 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
-        body: Center(
-        child: Column(
-          children: [
-            Row(
-            children:  <Widget>[
+      body: Center(
+          child: Column(
+        children: [
+          Row(
+            children: <Widget>[
               Expanded(
                 flex: 6, // 60% of space => (6/(6 + 4))
                 child: Padding(
@@ -74,12 +74,19 @@ class HomeView extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom( // fromHeight use double.infinity as width and 40 is the height
-                    ),
+                    style: ElevatedButton.styleFrom(
+                        // fromHeight use double.infinity as width and 40 is the height
+                        ),
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MapView()),
+                        MaterialPageRoute(
+                            builder: (context) => const MapPage(
+                                  lattitude: -16.399314,
+                                  longitude: -71.536684,
+                                  name: "Demo",
+                                  lastname: "Patient",
+                                )),
                       );
                     },
                     child: Icon(Icons.search, size: 18),
@@ -88,14 +95,12 @@ class HomeView extends StatelessWidget {
               ),
             ],
           ),
-            Padding(
-              padding: const EdgeInsets.all(64.0),
-              child: Image.asset('assets/images/world.png'),
-            ),
-
-          ],
-        )
-      ),
+          Padding(
+            padding: const EdgeInsets.all(64.0),
+            child: Image.asset('assets/images/world.png'),
+          ),
+        ],
+      )),
     );
   }
 }
