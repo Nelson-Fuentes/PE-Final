@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pe_final/home.dart';
+import 'package:pe_final/page/home_page.dart';
+import 'package:pe_final/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,15 +33,16 @@ class MyApp extends StatelessWidget {
   final MaterialColor colorCustom = const MaterialColor(0xFF263238, color);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: colorCustom,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => GoogleSignInProvider(),
+        child: MaterialApp(
+          title: 'Final PE',
+          theme: ThemeData(
+            primarySwatch: colorCustom,
+          ),
+          home: const HomePage(),
+        ),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -55,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getUsers();
+    //getUsers();
   }
 
   void getUsers() async {
@@ -125,6 +130,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: Text("INICIAR SESIÓN"),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(40),
+                ),
+                onPressed: () {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.googleLogin();
+                },
+                label: Text("INICIAR SESIÓN CON GOOGLE"),
+                icon: FaIcon(FontAwesomeIcons.google, color: Colors.white),
               ),
             )
           ],
