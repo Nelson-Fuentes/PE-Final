@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 import 'home.dart';
 
 class ProfileView extends StatelessWidget {
-  //const ProfileView({Key? key}) : super(key: key);
+  ProfileView({Key? key}) : super(key: key);
 
   final user_ = FirebaseAuth.instance.currentUser!;
-  var user_firebase = Usuario();
+  //var user_firebase = Usuario();
 
   String code = "", condition = "", phone = "", status = "";
   num latitud = 0.0, longitud = 0.0;
@@ -39,8 +39,53 @@ class ProfileView extends StatelessWidget {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection('Users').doc(user_.email);
 
-    DocumentSnapshot user = await documentReference.get();
-    Map<String, dynamic> data = user.data()! as Map<String, dynamic>;
+    await documentReference.get().then((doc) => {
+          if (doc.exists) {chargeUser(documentReference)} else {}
+        });
+  }
+
+  void saveUser() async {
+    Map<String, dynamic> pat = {
+      "code": this.code,
+      "condition": this.condition,
+      "latitude": this.latitud,
+      "longitude": this.longitud,
+      "phone": this.phone,
+      "status": this.status
+    };
+
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(user_.email)
+        .set(pat)
+        .whenComplete(() {
+      print("actualizado");
+    });
+  }
+
+  void createUser() async {
+    Map<String, dynamic> pat = {
+      "code": this.code,
+      "condition": this.condition,
+      "latitude": this.latitud,
+      "longitude": this.longitud,
+      "phone": this.phone,
+      "status": this.status
+    };
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection("Users");
+    collectionReference.add(pat).whenComplete(() {
+      print("registrado");
+    });
+  }
+
+  void chargeUser(DocumentReference document) async {
+    DocumentSnapshot user_1 = await document.get();
+    Map<String, dynamic> data = user_1.data()! as Map<String, dynamic>;
+    getcode(data['code']);
+    getcondition(data['condition']);
+    getphone(data['phone']);
+    getstatus(data['status']);
   }
 
   @override
@@ -89,25 +134,47 @@ class ProfileView extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
-          CircleAvatar(
-            radius: 70,
-            backgroundImage: NetworkImage(user_.photoURL!),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: CircleAvatar(
+              radius: 70,
+              backgroundImage: NetworkImage(user_.photoURL!),
+            ),
           ),
-          Text(
-            'Nombre: ' + user_.displayName!,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: TextFormField(
+              initialValue: user_.displayName!,
+              decoration: const InputDecoration(
+                labelText: 'Nombre',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(
+                  Icons.people,
+                ),
+              ),
+            ),
           ),
-          Text(
-            'Correo: ' + user_.email!,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: TextFormField(
+              initialValue: user_.email!,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(
+                  Icons.email,
+                ),
+              ),
+            ),
           ),
           Row(
             children: <Widget>[
               Expanded(
                 flex: 6, // 60% of space => (6/(6 + 4))
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: TextFormField(
+                    initialValue: this.code,
                     decoration: const InputDecoration(
                       labelText: 'Código',
                       border: OutlineInputBorder(),
@@ -115,13 +182,16 @@ class ProfileView extends StatelessWidget {
                         Icons.vpn_key,
                       ),
                     ),
+                    onChanged: (String _code) {
+                      getcode(_code);
+                    },
                   ),
                 ),
               ),
               Expanded(
                 flex: 2, // 40% of space
                 child: Padding(
-                  padding: const EdgeInsets.all(25.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         // fromHeight use double.infinity as width and 40 is the height
@@ -140,9 +210,9 @@ class ProfileView extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(4.0),
             child: TextFormField(
-              //initialValue: ,
+              initialValue: this.phone,
               decoration: const InputDecoration(
                 labelText: 'Telefono',
                 border: OutlineInputBorder(),
@@ -150,6 +220,25 @@ class ProfileView extends StatelessWidget {
                   Icons.call,
                 ),
               ),
+              onChanged: (String _p) {
+                getphone(_p);
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: TextFormField(
+              initialValue: this.condition,
+              decoration: const InputDecoration(
+                labelText: 'Condicion',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(
+                  Icons.security_update_warning_sharp,
+                ),
+              ),
+              onChanged: (String _c) {
+                getcondition(_c);
+              },
             ),
           ),
           ListTile(
@@ -163,19 +252,21 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: ElevatedButton.icon(
               icon: Icon(Icons.save),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(
                     40), // fromHeight use double.infinity as width and 40 is the height
               ),
-              onPressed: () {},
+              onPressed: () {
+                saveUser();
+              },
               label: Text("GUARDAR"),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: ElevatedButton.icon(
               icon: Icon(Icons.visibility),
               style: ElevatedButton.styleFrom(
@@ -188,11 +279,11 @@ class ProfileView extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const StalkersView()),
                 );
               },
-              label: Text("VER STALKERS"),
+              label: Text("VER SEGUIDORES"),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: ElevatedButton.icon(
               icon: Icon(Icons.logout),
               style: ElevatedButton.styleFrom(
@@ -209,7 +300,7 @@ class ProfileView extends StatelessWidget {
                         builder: (context) =>
                             const MyHomePage(title: 'Titulo')));
               },
-              label: Text("Log Out"),
+              label: Text("FINALIZAR SESION"),
             ),
           )
         ],
