@@ -293,12 +293,13 @@ class ProfileView extends StatelessWidget {
               onPressed: () {
                 final provider =
                     Provider.of<GoogleSignInProvider>(context, listen: false);
-                provider.logOut();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const MyHomePage(title: 'Titulo')));
+                provider.logOut().then((value) => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const MyHomePage(title: 'Titulo')))
+                    });
               },
               label: Text("FINALIZAR SESION"),
             ),

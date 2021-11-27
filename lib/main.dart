@@ -141,7 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   final provider =
                       Provider.of<GoogleSignInProvider>(context, listen: false);
-                  provider.googleLogin();
+                  provider.googleLogin().then((value) => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeView()))
+                      });
                 },
                 label: Text("INICIAR SESIÓN CON GOOGLE"),
                 icon: FaIcon(FontAwesomeIcons.google, color: Colors.white),
