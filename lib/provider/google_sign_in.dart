@@ -10,7 +10,7 @@ class GoogleSignInProvider extends ChangeNotifier {
   Future googleLogin() async {
     try {
       final googleUser = await googleSignIn.signIn();
-      if (googleUser == null) return;
+      if (googleUser == null) return false;
       _user = googleUser;
 
       final googleAuth = await googleUser.authentication;
@@ -23,6 +23,7 @@ class GoogleSignInProvider extends ChangeNotifier {
       print(e.toString());
     }
     notifyListeners();
+    return true;
   }
 
   Future logOut() async {

@@ -142,10 +142,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   final provider =
                       Provider.of<GoogleSignInProvider>(context, listen: false);
                   provider.googleLogin().then((value) => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeView()))
+                        if (value == true)
+                          {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeView()))
+                          }
+                        else
+                          {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('Error '),
+                                        content: const Text(
+                                            'problema al obtener datos del servidor'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ]))
+                          }
                       });
                 },
                 label: Text("INICIAR SESIÓN CON GOOGLE"),
