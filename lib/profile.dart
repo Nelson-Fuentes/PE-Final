@@ -132,17 +132,23 @@ class ProfileView extends StatelessWidget {
         ),
       ),
       body: Center(
-          child: Column(
+          child: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              radius: 70,
-              backgroundImage: NetworkImage(user_.photoURL!),
+              radius: 50,
+              child: ClipOval(
+                child: Image.network(
+                  user_.photoURL!,
+                ),
+              ),
+              //backgroundImage: NetworkImage(user_.photoURL!),
+              backgroundColor: Colors.transparent,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(12.0),
             child: TextFormField(
               initialValue: user_.displayName!,
               decoration: const InputDecoration(
@@ -155,7 +161,7 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(12.0),
             child: TextFormField(
               initialValue: user_.email!,
               decoration: const InputDecoration(
@@ -172,7 +178,7 @@ class ProfileView extends StatelessWidget {
               Expanded(
                 flex: 6, // 60% of space => (6/(6 + 4))
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
                     initialValue: this.code,
                     decoration: const InputDecoration(
@@ -191,7 +197,7 @@ class ProfileView extends StatelessWidget {
               Expanded(
                 flex: 2, // 40% of space
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         // fromHeight use double.infinity as width and 40 is the height
@@ -210,7 +216,7 @@ class ProfileView extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(12.0),
             child: TextFormField(
               initialValue: this.phone,
               decoration: const InputDecoration(
@@ -226,7 +232,7 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(12.0),
             child: TextFormField(
               initialValue: this.condition,
               decoration: const InputDecoration(
@@ -252,7 +258,7 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: ElevatedButton.icon(
               icon: Icon(Icons.save),
               style: ElevatedButton.styleFrom(
@@ -266,7 +272,7 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
               icon: Icon(Icons.visibility),
               style: ElevatedButton.styleFrom(
@@ -283,7 +289,7 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
               icon: Icon(Icons.logout),
               style: ElevatedButton.styleFrom(
