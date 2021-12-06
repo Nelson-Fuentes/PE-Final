@@ -50,7 +50,10 @@ class _MapPageState extends State<MapPage> {
           myLocationButtonEnabled: true,
           scrollGesturesEnabled: true,
           zoomGesturesEnabled: true,
-          zoomControlsEnabled: false,
+          /*myLocationEnabled: true,
+          myLocationButtonEnabled: true,
+          
+          zoomControlsEnabled: false,*/
         ));
   }
 }
