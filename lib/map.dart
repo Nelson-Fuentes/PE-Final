@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+
 
 class MapPage extends StatefulWidget {
   final double lattitude, longitude;
@@ -51,6 +53,13 @@ class _MapPageState extends State<MapPage> {
           scrollGesturesEnabled: true,
           zoomGesturesEnabled: true,
           zoomControlsEnabled: false,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            FlutterPhoneDirectCaller.callNumber('51983199102');
+          },
+          backgroundColor: Colors.green,
+          child: const Icon(Icons.phone),
         ));
   }
 }
