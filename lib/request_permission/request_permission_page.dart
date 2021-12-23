@@ -29,6 +29,7 @@ class _RequestPermissionPageState extends State<RequestPermissionPage> {
               )
             }
         });
+    _controller.request();
   }
 
   @override
