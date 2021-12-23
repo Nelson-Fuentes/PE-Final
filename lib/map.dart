@@ -2,67 +2,85 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:pe_final/map_controller.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
-class MapPage extends StatefulWidget {
-  final double lattitude, longitude;
+
+class MapPage extends StatelessWidget {
   final String name, lastname;
+  final LatLng ubicacion;
+  
   const MapPage(
       {Key? key,
-      required this.lattitude,
-      required this.longitude,
       required this.name,
-      required this.lastname})
+      required this.lastname, 
+      required this.ubicacion})
       : super(key: key);
 
-  _MapPageState createState() =>
-      _MapPageState(lattitude, longitude, name, lastname);
-}
-
-class _MapPageState extends State<MapPage> {
-  _MapPageState(
-      double lattitude, double longitude, String name, String lastname) {
-    ubicacion = LatLng(lattitude, longitude);
-    title = "Ubicacion de " + name;
-    description = name + " " + lastname;
-  }
-
-  String? title, description;
-  LatLng? ubicacion;
-
-  final Map<MarkerId, Marker> _markers = {};
-
-  Set<Marker> get markers => _markers.values.toSet();
-
   Widget build(BuildContext context) {
-    final markerId = MarkerId(_markers.length.toString());
-    final marker = Marker(
-      markerId: markerId,
-      position: ubicacion!,
-      infoWindow: InfoWindow(title: title, snippet: description),
-    );
-    _markers[markerId] = marker;
-    return Scaffold(
+    return ChangeNotifierProvider<MapController>(
+      create: (_){
+        final controller = MapController();
+        controller.addPoint(this.ubicacion,this.name,this.lastname);
+        return controller;
+      },
+      child: Scaffold(
         appBar: AppBar(
-          title: Text("Mapa de " + widget.name),
+          title: Text("Mapa de " + name),
         ),
-        body: GoogleMap(
-          markers: markers,
-          initialCameraPosition: CameraPosition(target: ubicacion!, zoom: 16),
-          myLocationButtonEnabled: true,
-          scrollGesturesEnabled: true,
-          zoomGesturesEnabled: true,
-          /*myLocationEnabled: true,
-          myLocationButtonEnabled: true,
-          
-          zoomControlsEnabled: false,*/
+        body: Consumer<MapController>(
+          builder: (_,controller,__){
+            var widget=null;
+            print("Access"+controller.gpsEnable.toString());
+            if(!controller.gpsEnable){
+              widget = Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text("Necesitamos de la tu Ubicación para proporcionarte servicio",
+                      textAlign:TextAlign.center
+                    )
+                  ],
+                ),
+              );
+            }else{
+                widget = GoogleMap(
+                markers: controller.markers,
+                initialCameraPosition: CameraPosition(target: ubicacion , zoom: 16),
+                myLocationButtonEnabled: true,
+                myLocationEnabled: true,
+                scrollGesturesEnabled: true,
+                zoomGesturesEnabled: true 
+              );
+            }
+            return widget;
+          } 
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            FlutterPhoneDirectCaller.callNumber('51983199102');
-          },
-          backgroundColor: Colors.green,
-          child: const Icon(Icons.phone),
-        ));
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              FlutterPhoneDirectCaller.callNumber('51983199102');
+            },
+            backgroundColor: Colors.green,
+            child: const Icon(Icons.phone)
+          )
+        )
+      );
   }
 }
+
 //widget.longitude.toString()
+// GoogleMap(
+//           markers: controller.markers,
+//           initialCameraPosition: CameraPosition(target: ubicacion , zoom: 16),
+//           myLocationButtonEnabled: true,
+//           scrollGesturesEnabled: true,
+//           zoomGesturesEnabled: true
+//         ),
+//         floatingActionButton: FloatingActionButton(
+//           onPressed: () {
+//             FlutterPhoneDirectCaller.callNumber('51983199102');
+//           },
+//           backgroundColor: Colors.green,
+//           child: const Icon(Icons.phone),
+//         ))
