@@ -7,29 +7,22 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 class MapPage extends StatelessWidget {
-  final String name, lastname;
-  final LatLng ubicacion;
   final bool isSending;
+  final String email;
 
-  const MapPage(
-      {Key? key,
-      required this.name,
-      required this.lastname,
-      required this.ubicacion,
-      required this.isSending})
+  const MapPage({Key? key, required this.isSending, required this.email})
       : super(key: key);
 
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MapController>(
         create: (_) {
-          final controller = MapController(this.isSending);
-          controller.addPoint(this.ubicacion, this.name, this.lastname);
+          final controller = MapController(this.isSending, this.email);
 
           return controller;
         },
         child: Scaffold(
             appBar: AppBar(
-              title: Text("Mapa de " + name),
+              title: Text("Mapa"),
             ),
             body: Consumer<MapController>(builder: (_, controller, __) {
               var widget = null;

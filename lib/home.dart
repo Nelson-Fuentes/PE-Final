@@ -75,7 +75,7 @@ class HomeView extends StatelessWidget {
               Expanded(
                 flex: 2, // 40% of space
                 child: Padding(
-                  padding: const EdgeInsets.all(25.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         // fromHeight use double.infinity as width and 40 is the height
@@ -85,14 +85,31 @@ class HomeView extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MapPage(
-                                  ubicacion: LatLng(-16.399314, -71.536684),
-                                  name: "Demo",
-                                  lastname: "Patient",
-                                  isSending: false,
-                                )),
+                                isSending: true, email: "none@gmail.com")),
                       );
                     },
-                    child: Icon(Icons.search, size: 18),
+                    child: Icon(Icons.cloud_upload_outlined, size: 30),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2, // 40% of space
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        // fromHeight use double.infinity as width and 40 is the height
+                        ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MapPage(
+                                isSending: false,
+                                email: "llorenzo@unsa.edu.pe")),
+                      );
+                    },
+                    child: Icon(Icons.cloud_download_outlined, size: 30),
                   ),
                 ),
               ),

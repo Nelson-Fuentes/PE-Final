@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +10,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapController extends ChangeNotifier {
   late bool isSending;
+  late String email;
 
-  MapController(bool isSending) {
+  MapController(bool isSending, String email) {
     this.isSending = isSending;
+    this.email = email;
     _init();
   }
 
@@ -34,20 +37,24 @@ class MapController extends ChangeNotifier {
       ),
       zoom: 15);
 
-  void addPoint(LatLng position, String title, String description) {
+  void addPoint(List list) {
+    //LatLng position, String title, String description
+    _markers = {};
     final markerId = MarkerId(_markers.length.toString());
     final marker = Marker(
       markerId: markerId,
-      position: position,
-      infoWindow: InfoWindow(title: title, snippet: description),
+      position: list[0],
+      infoWindow: InfoWindow(title: list[1], snippet: list[2]),
     );
     _markers[markerId] = marker;
     notifyListeners();
   }
 
   Future<void> _init() async {
-    ubicationSuscription =
-        NumberCreator().stream.map((i) => i.toString()).listen(print);
+    if (!isSending) {
+      ubicationSuscription =
+          NumberCreator(this.email).stream.map((i) => i).listen(addPoint);
+    }
     _gpsEnable = await Geolocator.isLocationServiceEnabled();
     _gpsSubscription =
         Geolocator.getServiceStatusStream().listen((status) async {
@@ -104,19 +111,24 @@ class MapController extends ChangeNotifier {
   void dispose() {
     _positionSuscription?.cancel();
     _gpsSubscription?.cancel();
-    ubicationSuscription.cancel();
+    if (!isSending) {
+      ubicationSuscription.cancel();
+    }
     super.dispose();
   }
 }
 
 class NumberCreator {
   final user_ = FirebaseAuth.instance.currentUser!;
-  NumberCreator() {
+  late String email;
+  NumberCreator(String email) {
+    this.email = email;
     Timer.periodic(Duration(seconds: 1), (timer) async {
       if (user_ != null) {
         _controller.sink.add(await getUserInfo());
       } else {
-        _controller.sink.add(new LatLng(-16.3989, -71.537));
+        _controller.sink
+            .add([new LatLng(-16.3989, -71.537), "Erick", "Marcelo"]);
       }
       // var documentReference =
       //     FirebaseFirestore.instance.collection("Users").doc(user_.email);
@@ -125,21 +137,22 @@ class NumberCreator {
       //     });
     });
   }
-  Future<LatLng> getUserInfo() async {
+  var _count = 1;
+
+  final _controller = StreamController<List>();
+  Stream<List> get stream => _controller.stream;
+
+  Future<List> getUserInfo() async {
     var collection = FirebaseFirestore.instance.collection('Users');
-    var docSnapshot = await collection.doc(user_.email).get();
+    var docSnapshot = await collection.doc(this.email).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
       var latitude = data?['latitude'];
       var longitude = data?['longitude'];
       if (latitude != null && longitude != null) {
-        return new LatLng(latitude, longitude);
+        return [new LatLng(latitude, longitude), "Erick", "Marcelo"];
       }
     }
-    return new LatLng(-16.3989, -71.537);
+    return [new LatLng(-16.3989, -71.537), "Erick", "Marcelo"];
   }
-
-  var _count = 1;
-  final _controller = StreamController<LatLng>();
-  Stream<LatLng> get stream => _controller.stream;
 }
