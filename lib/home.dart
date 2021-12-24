@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pe_final/profile.dart';
 import 'package:pe_final/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +75,7 @@ class HomeView extends StatelessWidget {
               Expanded(
                 flex: 2, // 40% of space
                 child: Padding(
-                  padding: const EdgeInsets.all(25.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         // fromHeight use double.infinity as width and 40 is the height
@@ -84,14 +85,31 @@ class HomeView extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MapPage(
-                                  lattitude: -16.399314,
-                                  longitude: -71.536684,
-                                  name: "Demo",
-                                  lastname: "Patient",
-                                )),
+                                isSending: true, email: "none@gmail.com")),
                       );
                     },
-                    child: Icon(Icons.search, size: 18),
+                    child: Icon(Icons.cloud_upload_outlined, size: 30),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2, // 40% of space
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        // fromHeight use double.infinity as width and 40 is the height
+                        ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MapPage(
+                                isSending: false,
+                                email: "llorenzo@unsa.edu.pe")),
+                      );
+                    },
+                    child: Icon(Icons.cloud_download_outlined, size: 30),
                   ),
                 ),
               ),
