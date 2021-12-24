@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pe_final/profile.dart';
 import 'package:pe_final/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -84,10 +85,10 @@ class HomeView extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MapPage(
-                                  lattitude: -16.399314,
-                                  longitude: -71.536684,
+                                  ubicacion: LatLng(-16.399314, -71.536684),
                                   name: "Demo",
                                   lastname: "Patient",
+                                  isSending: false,
                                 )),
                       );
                     },

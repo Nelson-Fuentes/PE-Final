@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pe_final/home.dart';
 import 'package:pe_final/page/home_page.dart';
 import 'package:pe_final/provider/google_sign_in.dart';
+import 'package:pe_final/request_permission/request_permission_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: colorCustom,
           ),
-          home: const HomePage(),
+          home: const RequestPermissionPage(),
         ),
       );
 }
