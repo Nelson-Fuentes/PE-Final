@@ -77,7 +77,7 @@ class ProfileView extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomeView()),
+                    MaterialPageRoute(builder: (context) => HomeView()),
                   );
                 },
               ),

@@ -7,8 +7,17 @@ import 'package:provider/provider.dart';
 
 import 'map.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+class HomeView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _HomeView();
+}
+
+class _HomeView extends State<HomeView> {
+  late String cadena;
+  _HomeView() {}
+  getphone(cadena_) {
+    cadena = cadena_;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +42,7 @@ class HomeView extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomeView()),
+                  MaterialPageRoute(builder: (context) => HomeView()),
                 );
               },
             ),
@@ -69,6 +78,11 @@ class HomeView extends StatelessWidget {
                         Icons.vpn_key,
                       ),
                     ),
+                    onChanged: (String a) {
+                      setState(() {
+                        cadena = a;
+                      });
+                    },
                   ),
                 ),
               ),
@@ -84,8 +98,8 @@ class HomeView extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MapPage(
-                                isSending: true, email: "none@gmail.com")),
+                            builder: (context) =>
+                                MapPage(isSending: true, email: "")),
                       );
                     },
                     child: Icon(Icons.cloud_upload_outlined, size: 30),
@@ -104,9 +118,8 @@ class HomeView extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MapPage(
-                                isSending: false,
-                                email: "llorenzo@unsa.edu.pe")),
+                            builder: (context) =>
+                                MapPage(isSending: false, email: cadena)),
                       );
                     },
                     child: Icon(Icons.cloud_download_outlined, size: 30),

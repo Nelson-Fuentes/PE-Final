@@ -7,10 +7,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 class MapPage extends StatelessWidget {
-  final bool isSending;
-  final String email;
+  bool isSending;
+  String email;
 
-  const MapPage({Key? key, required this.isSending, required this.email})
+  MapPage({Key? key, required this.isSending, required this.email})
       : super(key: key);
 
   Widget build(BuildContext context) {

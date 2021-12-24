@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomeView()),
+                    MaterialPageRoute(builder: (context) => HomeView()),
                   );
                 },
                 child: Text("INICIAR SESIÓN"),
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomeView()))
+                                    builder: (context) => HomeView()))
                           }
                         else
                           {
