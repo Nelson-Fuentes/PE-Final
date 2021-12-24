@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,9 +15,22 @@ class HomeView extends StatefulWidget {
 
 class _HomeView extends State<HomeView> {
   late String cadena;
+  late bool confirmar = false;
+
   _HomeView() {}
   getphone(cadena_) {
     cadena = cadena_;
+  }
+
+  void getUser(String user_email) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('Users').doc(user_email);
+
+    DocumentSnapshot user = await documentReference.get();
+    Map<String, dynamic> data = user.data()! as Map<String, dynamic>;
+    await documentReference.get().then((doc) => {
+          if (doc.exists) {confirmar = true} else {confirmar = false}
+        });
   }
 
   @override
@@ -115,12 +129,29 @@ class _HomeView extends State<HomeView> {
                         // fromHeight use double.infinity as width and 40 is the height
                         ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MapPage(isSending: false, email: cadena)),
-                      );
+                      getUser(cadena);
+                      if (confirmar) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MapPage(isSending: false, email: cadena)),
+                        );
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                    title: const Text('Error '),
+                                    content: const Text(
+                                        'No se ha podido confirmar la existencia del correo'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ]));
+                      }
                     },
                     child: Icon(Icons.cloud_download_outlined, size: 30),
                   ),
