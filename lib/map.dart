@@ -9,18 +9,20 @@ import 'package:provider/provider.dart';
 class MapPage extends StatelessWidget {
   final String name, lastname;
   final LatLng ubicacion;
+  final bool isSending;
 
   const MapPage(
       {Key? key,
       required this.name,
       required this.lastname,
-      required this.ubicacion})
+      required this.ubicacion,
+      required this.isSending})
       : super(key: key);
 
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MapController>(
         create: (_) {
-          final controller = MapController();
+          final controller = MapController(this.isSending);
           controller.addPoint(this.ubicacion, this.name, this.lastname);
 
           return controller;

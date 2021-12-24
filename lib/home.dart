@@ -88,6 +88,7 @@ class HomeView extends StatelessWidget {
                                   ubicacion: LatLng(-16.399314, -71.536684),
                                   name: "Demo",
                                   lastname: "Patient",
+                                  isSending: false,
                                 )),
                       );
                     },
