@@ -79,7 +79,7 @@ class MapController extends ChangeNotifier {
           await FirebaseFirestore.instance
               .collection("Users")
               .doc(user_.email)
-              .set(dict)
+              .update(dict)
               .whenComplete(() {
             print("actualizado");
           });
