@@ -42,6 +42,7 @@ dependencies:
   font_awesome_flutter:
   provider:
   flutter_phone_direct_caller: ^2.1.0
+  sensors_plus: ^1.2.1
 
 dev_dependencies:
   flutter_test:
