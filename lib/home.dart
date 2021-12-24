@@ -25,9 +25,6 @@ class _HomeView extends State<HomeView> {
   void getUser(String user_email) async {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection('Users').doc(user_email);
-
-    DocumentSnapshot user = await documentReference.get();
-    Map<String, dynamic> data = user.data()! as Map<String, dynamic>;
     await documentReference.get().then((doc) => {
           if (doc.exists) {confirmar = true} else {confirmar = false}
         });
