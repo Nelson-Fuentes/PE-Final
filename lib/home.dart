@@ -85,7 +85,7 @@ class HomeView extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MapPage(
-                                  ubicacion:LatLng(-16.399314,-71.536684),
+                                  ubicacion: LatLng(-16.399314, -71.536684),
                                   name: "Demo",
                                   lastname: "Patient",
                                 )),

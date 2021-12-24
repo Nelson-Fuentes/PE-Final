@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pe_final/request_permission/request_permission_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../home.dart';
+import '../main.dart';
 
 class RequestPermissionPage extends StatefulWidget {
   const RequestPermissionPage({Key? key}) : super(key: key);
@@ -25,7 +25,10 @@ class _RequestPermissionPageState extends State<RequestPermissionPage> {
             {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const HomeView()),
+                MaterialPageRoute(
+                    builder: (context) => const MyHomePage(
+                          title: '',
+                        )),
               )
             }
         });
